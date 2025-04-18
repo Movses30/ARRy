@@ -1,12 +1,15 @@
 #include <iostream>
 
+// @EA: Overall comment: Please follow our naming conventions. If it is a member which points to the nex Node the name should not be next, but m_pNodeNext
+// @EA: Overall comment: Please for the next time define the functions outside of the class, so it would be easier to see the member functions, then go to implementations
+
 template <typename T>
 class List {
 private:
     struct Node {
         T data;
         Node* next;
-        Node* start;
+        Node* start;  // @EA: The variable name could be better. It's start of what? If You named the next poiter "next" this one should be "previous" or "prev"
         Node(const T& data) : data(data), next(NULL), start(NULL) {}
     };
 
@@ -71,7 +74,7 @@ public:
     // Pop operations
     void pop_back() 
     {
-        if (!nextPtr) 
+        if (!nextPtr) // @EA: As we're throwing an exception for this condition in the "front()" function, it would be nice to throw it here as well. It's not a mistake though, just a nice to have feature
             return;
         Node* temp = nextPtr;
         nextPtr = nextPtr->start;
@@ -85,8 +88,8 @@ public:
 
     void pop_front() 
     {
-        if (!head) 
-            return;
+        if (!head) // @EA: As we're throwing an exception for this condition in the "front()" function, it would be nice to throw it here as well. It's not a mistake though, just a nice to have feature
+            return; 
         Node* temp = head;
         head = head->next;
         if (head) 
@@ -135,6 +138,7 @@ public:
             push_front(value);
             return;
         }
+
         if (index == list_size) 
         {
             push_back(value);
@@ -154,6 +158,10 @@ public:
         ++list_size;
     }
 
+    // @EA: This function should get an iterator as an input, not a Node*
+    // Dereferncing that iterator should then get the Node*
+    // The usage is that at some point, You may have an iterator and You want to insert an element after that object
+    // You can't use the function below, because the "Node*" member of the iterator is private
     void insert(Node* index, const T& value) 
     {
         if (!index) 
@@ -268,6 +276,8 @@ public:
         other.list_size = 0;
     }
         //splice 
+    // @EA: This function should also accecpt iterator as a parameter and not raw pointer: "Node*"
+    // Also, it shold return a new List, we should not pass a list other to this function as an argument
     void splice(Node* index, List& other) {
         if (this == &other || !index || !other.head) 
             return;
