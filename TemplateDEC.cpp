@@ -12,6 +12,8 @@ private:
 
 public:
     MyDec(); // Default constructor
+    // @EA: Should be changed, do not use vector, there is a special type for this action: initializer_list.
+    //      We have already discussed this, when You provided the cyclic vector implementation
     MyDec(const std::vector<T>& values); // Constructor with initial values
 
     void display() const; // Display contents
@@ -88,6 +90,8 @@ void MyDec<T>::display() const
     std::cout << std::endl;
 }
 
+// @EA: If the first block is not full, then the index will not be calculated correctly
+// This is an overall conceptual problem, that needs to be fixed from the multiple places
 template<typename T>
 void MyDec<T>::push_back(const T& value) 
 {
@@ -101,6 +105,7 @@ void MyDec<T>::push_back(const T& value)
     ++back_index;
 }
 
+// @EA: push_front is not functional
 template<typename T>
 void MyDec<T>::push_front(const T& value) 
 {
@@ -126,6 +131,7 @@ void MyDec<T>::pop_back()
     if (back_index % BLOCK_SIZE == 0) 
     {
         m_map.pop_back(); // Remove empty block
+        // @EA: Afer modifying the m_map, back_index and front_index may also need to be modified 
     }
 }
 
@@ -207,6 +213,7 @@ MyDec<T>::iterator::iterator(MyDec* container, size_t index)
 {
 }
 
+// @EA: Wht if the front block is not full?
 template<typename T>
 T& MyDec<T>::iterator::operator*() 
 {
