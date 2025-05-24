@@ -1,9 +1,9 @@
 #include "Btree.h"
 
-// Կոնստրուկտոր
+
 BinaryTree::BinaryTree() : root(nullptr) {}
 
-// Ներքին insert ֆունկցիա
+
 Node* BinaryTree::insert(Node* node, int value) 
 {
     if (!node) return new Node(value);
